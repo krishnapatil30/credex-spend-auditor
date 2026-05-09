@@ -1,65 +1,114 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { calculateAudit } from "@/lib/audit-logic";
+import { TrendingDown, Users, Zap } from "lucide-react";
+
+export default function AuditPage() {
+  const [userCount, setUserCount] = useState(50);
+
+  // Simulating a real company stack: 
+  // Everyone has ChatGPT, half have Claude, some use Cursor.
+  const audit = calculateAudit([
+    { toolId: "chatgpt", userCount: userCount },
+    { toolId: "claude", userCount: Math.floor(userCount * 0.5) },
+    { toolId: "cursor", userCount: Math.floor(userCount * 0.3) }
+  ]);
+
+  const isSaving = audit.annualSavings >= 0;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen bg-slate-50 p-8 font-sans">
+      <div className="max-w-4xl mx-auto space-y-8">
+        
+        <div className="space-y-2 text-center md:text-left">
+          <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 border-none px-3 py-1">
+            v1.0 Audit Engine
+          </Badge>
+          <h1 className="text-4xl font-black tracking-tight text-slate-900 md:text-5xl">
+            AI Spend Auditor
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-slate-500 text-lg max-w-xl">
+            Stop overpaying for fragmented AI subscriptions. Consolidate seats and save thousands.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid gap-6 md:grid-cols-5">
+          {/* Input Section (60% width) */}
+          <Card className="md:col-span-3 shadow-sm border-slate-200">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-600" />
+                Organization Size
+              </CardTitle>
+              <CardDescription>How many employees are currently using AI tools?</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-10 pt-4">
+              <div className="flex justify-between items-end">
+                <div className="space-y-1">
+                  <span className="text-sm font-medium text-slate-500 uppercase">Current Seats</span>
+                  <p className="text-4xl font-bold text-slate-900">{userCount}</p>
+                </div>
+                <Badge variant="secondary" className="text-sm font-semibold">
+                  Avg. $20/user
+                </Badge>
+              </div>
+              
+              <Slider 
+                value={[userCount]} 
+                onValueChange={(v) => setUserCount(v[0])} 
+                max={500} 
+                min={10}
+                step={10} 
+                className="py-4"
+              />
+              
+              <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold uppercase text-slate-400">
+                <p>Small Team</p>
+                <p>Mid-Market</p>
+                <p>Enterprise</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Result Section (40% width) */}
+          <Card className={`md:col-span-2 border-none shadow-2xl ${isSaving ? 'bg-slate-900' : 'bg-red-950'} text-white transition-colors duration-500`}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-slate-100">
+                <TrendingDown className={`w-5 h-5 ${isSaving ? 'text-green-400' : 'text-red-400'}`} />
+                Annual ROI
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <p className="text-xs text-slate-400 uppercase tracking-widest font-bold">Estimated Savings</p>
+                <p className={`text-6xl font-black tracking-tighter mt-2 ${isSaving ? 'text-green-400' : 'text-red-400'}`}>
+                  ${Math.abs(audit.annualSavings).toLocaleString()}
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-6 border-t border-slate-800">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Monthly Team Cost</span>
+                  <span className="font-mono font-bold">${audit.potentialTeamCost.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Efficiency Gain</span>
+                  <span className="text-green-400 font-bold">+30%</span>
+                </div>
+              </div>
+
+              <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-all mt-4">
+                <Zap className="w-4 h-4 fill-current" />
+                Generate Full PDF Report
+              </button>
+            </CardContent>
+          </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
