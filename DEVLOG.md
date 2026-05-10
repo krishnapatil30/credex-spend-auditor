@@ -14,3 +14,16 @@
 ### Challenges:
 - Resolved a `ReferenceError` by properly exporting/importing the pricing schema.
 - Adjusted logic multipliers to ensure positive ROI visualization.
+
+## Day 3 — 2026-05-10
+### Progress:
+- **Visual ROI Charting:** Built a custom, high-performance bar chart using Tailwind CSS and relative width scaling for immediate "Waste vs. Save" visual feedback.
+- **Granular Tool Breakdown:** Implemented a secondary data layer breaking down total savings into tool-specific gains (ChatGPT, Claude, Cursor).
+- **Responsive Optimization:** Verified and adjusted layout constraints for mobile and tablet viewports to ensure a seamless experience.
+
+### Technical Challenges & Decisions:
+- **Decision:** Opted for a "CSS-only" bar chart using dynamic style widths to keep the bundle size minimal and performance high, avoiding heavy libraries like Recharts.
+- **Logic Sync:** Refined `audit-logic.ts` to ensure the "Optimized" bar stays logically proportional to the "Current" spend baseline during real-time slider updates.
+
+### Thoughts for Tomorrow:
+- Move into the **Persistence Layer**. I will implement a Supabase-backed Lead-Gen form to capture audit results, aligning with my interests in backend architecture and PostgreSQL.
