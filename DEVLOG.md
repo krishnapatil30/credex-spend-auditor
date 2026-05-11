@@ -27,3 +27,28 @@
 
 ### Thoughts for Tomorrow:
 - Move into the **Persistence Layer**. I will implement a Supabase-backed Lead-Gen form to capture audit results, aligning with my interests in backend architecture and PostgreSQL.
+## Day 4 — 2026-05-11
+**Hours worked:** 4
+
+### What I did:
+- **Database Provisioning: Successfully set up a Supabase PostgreSQL instance and designed a relational leads table.
+
+- **AI Intelligence Integration: Integrated Google Gemini 1.5 Flash to generate 100-word punchy financial audit summaries, fulfilling Requirement #4.
+
+- **Backend Plumbing: Developed asynchronous Next.js 15 Server Actions to bridge the UI, the LLM, and the database securely.
+
+- **Market Validation: Conducted 3 peer-group interviews with student developers and interns to validate the "Subscription Fatigue" hypothesis.
+
+- **UI/UX States: Engineered robust handling for isSubmitting and isSubmitted states, including a custom loading spinner and AI summary fade-in animation.
+
+### What I learned:
+- **Dependency Management:** Resolved workspace root conflicts in a Turbopack environment involving multiple lockfiles.
+- **Security Patterns:** Applied Row Level Security (RLS) policies to allow public write access to specific tables while maintaining database integrity.
+
+### Blockers:
+- Resolved a "Module Not Found" error by cleaning rogue lockfiles in the parent User directory and re-running a clean `npm install`.
+
+### Plan for tomorrow:
+- Final deployment to **Vercel**.
+- Sync production environment variables.
+- Final UI/UX audit for the portfolio launch and recording the 30-second demo video.
